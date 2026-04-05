@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vox Veda 2026 | Prediction Exchange</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .card { background: #1e293b; border-radius: 15px; padding: 20px; margin: 10px; border: 1px solid #334155; }
+        .btn { background: #3b82f6; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; }
+        .stats { color: #94a3b8; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <h2>🏛️ Election Prediction</h2>
+    <div class="card">
+        <h3>Kerala 2026: Majority</h3>
+        <p class="stats">Current Pool: 1,240,500 Credits</p>
+        <button class="btn" onclick="forecast('LDF')">Forecast LDF (1.8x)</button><br><br>
+        <button class="btn" onclick="forecast('UDF')">Forecast UDF (2.1x)</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Make the app full screen
+
+        // 1. THE MLM CAPTURE: Detect who referred this user
+        const urlParams = new URLSearchParams(window.location.search);
+        const referrer = urlParams.get('tgWebAppStartParam'); 
+
+        function forecast(side) {
+            tg.showConfirm(`Confirm your forecast for ${side}?`, (ok) => {
+                if(ok) {
+                    // Logic to trigger TON Wallet payment
+                    tg.showAlert(`Processing for ${side}. Referrer: ${referrer || 'Direct'}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
