@@ -1,92 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>VOX VEDA | SUPREMACY</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root { --gold: #fbbf24; --red: #ef4444; --blue: #3b82f6; --dark: #050505; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
-        
-        /* SCROLLING TICKER */
-        .ticker { background: #111; color: var(--gold); font-size: 0.7rem; padding: 5px; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #222; }
-        .ticker-wrap { display: inline-block; animation: scroll 20s linear infinite; }
-        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
-        /* CARDS */
-        .card { background: #0f172a; border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #1e293b; position: relative; overflow: hidden; }
-        .card-nda { border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(251, 191, 36, 0.15); }
-        
-        /* DYNAMIC BUTTONS */
-        .btn { border: none; padding: 20px; width: 100%; border-radius: 14px; font-weight: 900; cursor: pointer; transition: 0.2s; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-gold { background: linear-gradient(45deg, #fbbf24, #d97706); color: black; font-size: 1.3rem; }
-        .btn-red { background: var(--red); color: white; }
-        .btn-blue { background: #1e293b; color: #475569; border: 1px solid #334155; }
-
-        .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 5px; display: block; }
-        select { background: #1e293b; color: var(--gold); border: 1px solid #334155; padding: 15px; width: 100%; border-radius: 12px; margin-top: 10px; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-    <div class="ticker">
-        <div class="ticker-wrap">
-            🚀 ARCHITECT ID 8829 JUST EARNED 45,000 CREDITS (COMMISSION) • 🔥 NDA 10X NODE ACTIVATED IN 140 SEATS • ⚡ SETTLEMENT TIME: < 2 HOURS
-        </div>
-    </div>
-
-    <div class="card card-nda">
-        <span class="label" style="color:var(--gold)">🏆 SUPREME STATE PREDICTION</span>
-        <h2 style="margin:10px 0;">WHO RULES KERALA?</h2>
-        <button class="btn btn-gold" onclick="pay('STATE', 'NDA', 10)">NDA SUPREMACY (10X)</button>
-        <button class="btn btn-red" style="margin-top:12px" onclick="pay('STATE', 'LDF', 1.5)">LDF RETENTION (1.5X)</button>
-        <button class="btn btn-blue" style="margin-top:12px" onclick="pay('STATE', 'UDF', 0.5)">UDF COALITION (0.5X)</button>
-        <p style="font-size:0.7rem; color:#64748b; margin-top:15px;">* UDF returns restricted due to Low Probability Index.</p>
-    </div>
-
-    <div class="card">
-        <span class="label">📍 TARGETED CONSTITUENCY NODES</span>
-        <select id="constSelect" onchange="loadC()">
-            <option value="">SELECT FROM 140 SEATS...</option>
-            <option value="Nemom">Nemom (Trivandrum)</option>
-            <option value="Ernakulam">Ernakulam (Kochi)</option>
-            <option value="Dharmadam">Dharmadam (Kannur)</option>
-            <option value="Vattiyoorkavu">Vattiyoorkavu</option>
-            <option value="Palakkad">Palakkad</option>
-            </select>
-        
-        <div id="cView" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:20px;">
-            <h3 id="cName" style="color:var(--gold)">-</h3>
-            <div id="cBtns"></div>
-        </div>
-    </div>
-
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        const wallet = "YOUR_TON_WALLET_ADDRESS_HERE";
-
-        // PSYCHOLOGICAL RULE: NDA is ALWAYS 10x or Higher
-        function loadC() {
-            const name = document.getElementById('constSelect').value;
-            if(!name) return;
-            document.getElementById('cView').style.display = 'block';
-            document.getElementById('cName').innerText = name + " NODE";
-            
-            document.getElementById('cBtns').innerHTML = `
-                <div style="background:#1e1b4b; padding:10px; border-radius:10px; border:1px solid var(--gold);">
-                    <span class="label" style="color:var(--gold)">🔥 ALPHA OPPORTUNITY</span>
-                    <button class="btn btn-gold" onclick="pay('${name}', 'NDA', 10)">NDA (10X)</button>
-                </div>
-                <button class="btn btn-red" style="margin-top:10px;" onclick="pay('${name}', 'LDF', 1.5)">LDF (1.5X)</button>
-                <button class="btn btn-blue" style="margin-top:10px;" onclick="pay('${name}', 'UDF', 0.2)">UDF (0.2X)</button>
-            `;
-        }
-
-        function pay(loc, side, multi) {
-            tg.showConfirm(`CONFIRM ${multi}X EXECUTION\nCONSTITUENCY: ${loc}\n\nSEND USDT (TON) TO MASTER WALLET:\n${wallet}`, (ok) => {
-                if(ok) tg.showAlert("NODE SECURED. WAITING FOR BLOCKCHAIN CONFIRMATION.");
-            });
-        }
-    </script>
-</body>
-</html>
+const cData = {
+    "Nemom": { nda: "Rajeev Chandrasekhar", n_multi: 10, ldf: 1.5, udf: 0.2 },
+    "Kazhakoottam": { nda: "V. Muraleedharan", n_multi: 12, ldf: 1.4, udf: 0.1 },
+    "Vattiyoorkavu": { nda: "R. Sreelekha (Ex-DGP)", n_multi: 15, ldf: 1.5, udf: 0.2 },
+    "Attingal": { nda: "P. Sudheer", n_multi: 10, ldf: 1.3, udf: 0.5 },
+    "Chathannur": { nda: "BB Gopakumar", n_multi: 10, ldf: 1.5, udf: 0.3 },
+    "Devikulam": { nda: "S. Rajendran", n_multi: 12, ldf: 1.2, udf: 0.4 },
+    "Thrissur": { nda: "Padmaja Venugopal", n_multi: 15, ldf: 1.5, udf: 0.1 },
+    "Guruvayoor": { nda: "B. Gopalakrishnan", n_multi: 10, ldf: 1.4, udf: 0.2 },
+    "Palakkad": { nda: "Sobha Surendran", n_multi: 10, ldf: 1.5, udf: 0.2 },
+    "Malampuzha": { nda: "C. Krishnakumar", n_multi: 12, ldf: 1.1, udf: 0.5 },
+    "Pala": { nda: "Shone George", n_multi: 15, ldf: 1.4, udf: 0.2 },
+    "Kunnathunad": { nda: "Babu Divakaran", n_multi: 10, ldf: 1.5, udf: 0.3 },
+    "Manalur": { nda: "KK Anish Kumar", n_multi: 10, ldf: 1.5, udf: 0.4 },
+    "Manjeshwaram": { nda: "K. Surendran", n_multi: 10, ldf: 1.3, udf: 0.6 },
+    "Nattika": { nda: "CC Mukundan", n_multi: 10, ldf: 1.5, udf: 0.2 },
+    "Poonjar": { nda: "P.C. George", n_multi: 20, ldf: 1.2, udf: 0.1 }, // Highest Alpha Move
+    "Thiruvalla": { nda: "Anoop Antony", n_multi: 12, ldf: 1.5, udf: 0.3 },
+    "Aranmula": { nda: "Kummanam Rajasekharan", n_multi: 10, ldf: 1.4, udf: 0.2 },
+    "Thripunithura": { nda: "Anjaly Nair", n_multi: 15, ldf: 1.5, udf: 0.1 }
+};
