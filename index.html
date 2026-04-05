@@ -3,65 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOX VEDA | INSTITUTIONAL</title>
+    <title>VOX VEDA | COMMAND</title>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root { --gold: #fbbf24; --gold-dark: #b45309; --red: #ef4444; --bg: #020617; --card: #0f172a; --text: #f8fafc; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
+        /* HEADER */
         .header { background: #000; padding: 15px 20px; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .live-status { font-size: 0.65rem; font-weight: 800; color: #22c55e; display: flex; align-items: center; gap: 5px; }
-        .dot { height: 8px; width: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; }
+        .dot { height: 8px; width: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
+        /* TABS */
         .tabs { display: flex; background: #000; border-bottom: 1px solid #1e293b; }
-        .tab { flex: 1; padding: 15px; border: none; background: none; color: #64748b; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; }
+        .tab { flex: 1; padding: 15px; border: none; background: none; color: #64748b; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); background: #0f172a; }
 
-        .content { padding: 15px; }
+        /* CARDS */
+        .content { padding: 15px; max-width: 500px; margin: 0 auto; }
         .market-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #1e293b; position: relative; }
-        .premium { border: 1.5px solid var(--gold); box-shadow: 0 10px 30px rgba(251, 191, 36, 0.05); }
+        .premium { border: 1.5px solid var(--gold); box-shadow: 0 10px 40px rgba(251, 191, 36, 0.08); }
 
-        .cand-profile { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .cand-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; background: #1e293b; }
+        .cand-profile { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .cand-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; background: #1e293b; }
 
-        .sentiment { height: 6px; background: #1e293b; border-radius: 10px; margin: 15px 0; overflow: hidden; display: flex; }
-        .fill-nda { background: var(--gold); height: 100%; transition: 1s ease; }
-        
+        .sentiment-wrap { margin: 15px 0; }
+        .sentiment-label { display: flex; justify-content: space-between; font-size: 0.65rem; color: #94a3b8; margin-bottom: 5px; font-weight: bold; }
+        .sentiment-bar { height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; display: flex; }
+        .fill-nda { background: linear-gradient(90deg, #fbbf24, #d97706); height: 100%; transition: 1.5s ease-out; width: 0%; }
+
+        /* BUTTONS */
         .btn { border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; transition: 0.1s; }
+        .btn:active { transform: scale(0.97); }
         .btn-gold { background: linear-gradient(45deg, var(--gold), var(--gold-dark)); color: #000; }
         .btn-red { background: transparent; border: 1px solid var(--red); color: var(--red); }
-        .btn-blue { background: transparent; border: 1px solid #334155; color: #475569; font-size: 0.8rem; }
-
-        select { background: #1e293b; color: var(--gold); border: 1px solid var(--gold); padding: 16px; width: 100%; border-radius: 12px; font-weight: 700; margin-bottom: 20px; outline: none; }
+        
+        select { background: #0f172a; color: var(--gold); border: 1px solid var(--gold); padding: 16px; width: 100%; border-radius: 12px; font-weight: 700; margin-bottom: 20px; outline: none; appearance: none; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div><span style="color:var(--gold); font-weight:900; font-size:1.1rem; letter-spacing:-1px;">VOX VEDA</span></div>
+        <div><span style="color:var(--gold); font-weight:900; font-size:1.2rem; letter-spacing:-1px;">VOX VEDA</span></div>
         <div class="live-status"><div class="dot"></div> INSTITUTIONAL LIVE</div>
     </div>
 
     <div class="tabs">
-        <button class="tab active" onclick="switchTab('global', this)">🌎 State Pool</button>
-        <button class="tab" onclick="switchTab('local', this)">📍 Local Nodes</button>
+        <button class="tab active" onclick="switchTab('global', this)">🌎 Global</button>
+        <button class="tab" onclick="switchTab('local', this)">📍 Nodes</button>
     </div>
 
     <div class="content">
         <div id="global" class="tab-pane">
             <div class="market-card premium">
-                <h3 style="margin:0; font-size:1.2rem;">Kerala Final Victory 2026</h3>
-                <div class="sentiment"><div class="fill-nda" style="width:78%"></div></div>
-                <button class="btn btn-gold" onclick="order('STATE', 'NDA', 10)"><span>NDA SUPREMACY</span><span>10x</span></button>
-                <button class="btn btn-red" onclick="order('STATE', 'LDF', 1.5)"><span>LDF RETENTION</span><span>1.5x</span></button>
-                <button class="btn btn-blue" onclick="order('STATE', 'UDF', 0.1)"><span>UDF COALITION</span><span>0.1x</span></button>
+                <h3 style="margin:0; font-size:1.2rem;">Kerala State Victory 2026</h3>
+                <div class="sentiment-wrap">
+                    <div class="sentiment-label"><span>COMMUNITY YIELD</span><span id="global-perc">...</span></div>
+                    <div class="sentiment-bar"><div id="global-bar" class="fill-nda"></div></div>
+                </div>
+                <button class="btn btn-gold" onclick="order('STATE', 'NDA', 10, 'NDA Coalition')"><span>BUY NDA</span><span>10x</span></button>
+                <button class="btn btn-red" onclick="order('STATE', 'LDF', 1.5, 'LDF Retention')"><span>BUY LDF</span><span>1.5x</span></button>
             </div>
         </div>
 
         <div id="local" class="tab-pane" style="display:none;">
             <select id="cSelect" onchange="loadNode()">
-                <option value="">SELECT CONSTITUENCY NODE...</option>
-                </select>
+                <option value="">SELECT CONSTITUENCY...</option>
+            </select>
             <div id="nodeDisplay"></div>
         </div>
     </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // --- SUPABASE CONFIG ---
+        const SUPABASE_URL = 'https://gtioycbwqefiifvjupym.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_oqj3Jas-qUJfK_xLGPq0-A_7ZQKwLpN'; // Use Public Key for Web
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const database = {
+            "Nemom": { cand: "Rajeev Chandrasekhar", m: 10, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqfM" },
+            "Kazhakoottam": { cand: "V. Muraleedharan", m: 12, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0eK" },
+            "Vattiyoorkavu": { cand: "R. Sreelekha (Ex-DGP)", m: 15, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6" },
+            "Attingal": { cand: "P. Sudheer", m: 10, img: "https://ui-avatars.com/api/?name=P+Sudheer&background=0f172a&color=fbbf24" },
+            "Chathannur": { cand: "BB Gopakumar", m: 10, img: "https://ui-avatars.com/api/?name=B+Gopakumar" },
+            "Devikulam": { cand: "S. Rajendran", m: 12, img: "https://ui-avatars.com/api/?name=S+Rajendran" },
+            "Thrissur": { cand: "Padmaja Venugopal", m: 15, img: "https://ui-avatars.com/api/?name=Padmaja+V" },
+            "Guruvayoor": { cand: "B. Gopalakrishnan", m: 10, img: "https://ui-avatars.com/api/?name=B+Gopal" },
+            "Palakkad": { cand: "Sobha Surendran", m: 10, img: "https://ui-avatars.com/api/?name=Sobha+S" },
+            "Malampuzha": { cand: "C. Krishnakumar", m: 12, img: "https://ui-avatars.com/api/?name=C+Krishna" },
+            "Pala": { cand: "Shone George", m: 15, img: "https://ui-avatars.com/api/?name=Shone+G" },
+            "Kunnathunad": { cand: "Babu Divakaran", m: 10, img: "https://ui-avatars.com/api/?name=B+Divakaran" },
+            "Manalur": { cand: "KK Anish Kumar", m: 10, img: "https://ui-avatars.com/api/?name=KK+Anish" },
+            "Manjeshwaram": { cand: "K. Surendran", m: 10, img: "https://ui-avatars.com/api/?name=K+Surendran" },
+            "Nattika": { cand: "CC Mukundan", m: 10, img: "https://ui-avatars.com/api/?name=CC+Mukundan" },
+            "Poonjar": { cand: "P.C. George", m: 20, img: "https://ui-avatars.com/api/?name=PC+George" },
+            "Thiruvalla": { cand: "Anoop Antony", m: 12, img: "https://ui-avatars.com/api/?name=Anoop+A" },
+            "Aranmula": { cand: "Kummanam Rajasekharan", m: 10, img: "https://ui-avatars.com/api/?name=Kummanam+R" },
+            "Thripunithura": { cand: "Anjaly Nair", m: 15, img: "https://ui-avatars.com/api/?name=Anjaly+N" }
+        };
+
+        const select = document.getElementById('cSelect');
+        Object.keys(database).sort().forEach(key => {
+            let opt = document.createElement('option');
+            opt.value = key; opt.innerHTML = `${key} - ${database[key].cand}`;
+            select.appendChild(opt);
+        });
+
+        function switchTab(t, b) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(t).style.display = 'block';
+            b.classList.add('active');
+            if(t === 'global') fetchSentiment('STATE');
+        }
+
+        async function fetchSentiment(loc) {
+            const { data } = await supabase.from('predictions').select('side').eq('constituency', loc);
+            if (data) {
+                const total = data.length;
+                const nda = data.filter(d => d.side === 'NDA').length;
+                const perc = total > 0 ? Math.round((nda / total) * 100) : 85; // Default 85%
+                const barId = loc === 'STATE' ? 'global-bar' : 'local-bar';
+                const txtId = loc === 'STATE' ? 'global-perc' : 'local-perc';
+                if(document.getElementById(barId)) document.getElementById(barId).style.width = perc + '%';
+                if(document.getElementById(txtId)) document.getElementById(txtId).innerText = perc + '%';
+            }
+        }
+
+        function loadNode() {
+            const val = document.getElementById('cSelect').value;
+            const display = document.getElementById('nodeDisplay');
+            if(!val) return;
+            const d = database[val];
+            display.innerHTML = `
+                <div class="market-card premium">
+                    <div class="cand-profile"><img src="${d.img}" class="cand-img">
+                    <div><h3 style="margin:2px 0; color:var(--gold);">${d.cand}</h3><span style="font-size:0.6rem; color:#22c55e;">● NODE ACTIVE</span></div></div>
+                    <div class="sentiment-wrap">
+                        <div class="sentiment-label"><span>SENTIMENT</span><span id="local-perc">...</span></div>
+                        <div class="sentiment-bar"><div id="local-bar" class="fill-nda"></div></div>
+                    </div>
+                    <button class="btn btn-gold" onclick="order('${val}', 'NDA', ${d.m}, '${d.cand}')"><span>NDA POSITION</span><span>${d.m}x</span></button>
+                    <button class="btn btn-red" onclick="order('${val}', 'LDF', 1.5, 'Opponent')"><span>LDF POSITION</span><span>1.5x</span></button>
+                </div>`;
+            fetchSentiment(val);
+        }
+
+        async function order(loc, side, multi, cand) {
+            const user = tg.initDataUnsafe.user;
+            tg.showConfirm(`BUY POSITION: ${side} at ${multi}x?`, async (ok) => {
+                if(ok) {
+                    const { error } = await supabase.from('predictions').insert([{
+                        user_id: user ? user.id.toString() : 'anon_arch',
+                        constituency: loc, candidate: cand, side: side, multiplier: multi
+                    }]);
+                    if(!error) { tg.showAlert("✅ POSITION RECORDED"); fetchSentiment(loc); }
+                }
+            });
+        }
+        fetchSentiment('STATE');
+    </script>
+</body>
+</html>
