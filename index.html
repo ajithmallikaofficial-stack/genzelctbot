@@ -21,17 +21,19 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Make the app full screen
+        tg.expand();
 
-        // 1. THE MLM CAPTURE: Detect who referred this user
+        // MASTER WALLET CONFIGURATION
+        const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
+
+        // MLM TRACKER: Capture the Referrer ID from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const referrer = urlParams.get('tgWebAppStartParam'); 
 
         function forecast(side) {
-            tg.showConfirm(`Confirm your forecast for ${side}?`, (ok) => {
+            tg.showConfirm(`Confirm forecast for ${side}?\n\nTo complete, send USDT (TON Network) to:\n${masterWallet}\n\nReferrer Code: ${referrer || 'Direct'}`, (ok) => {
                 if(ok) {
-                    // Logic to trigger TON Wallet payment
-                    tg.showAlert(`Processing for ${side}. Referrer: ${referrer || 'Direct'}`);
+                    tg.showAlert("Request Logged. Once your transfer is detected on the blockchain, your credits will activate.");
                 }
             });
         }
