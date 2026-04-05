@@ -1,67 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VOX VEDA | SUPREMACY NODE</title>
+    <title>VOX VEDA | GLOBAL COMMAND</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #050505; color: #e2e8f0; font-family: 'Inter', sans-serif; padding: 20px; text-align: center; }
-        .header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px; }
+        body { background: #050505; color: #e2e8f0; font-family: 'Inter', sans-serif; padding: 15px; text-align: center; }
+        select { background: #1a1a1a; color: #fbbf24; border: 1px solid #fbbf24; padding: 12px; width: 100%; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
+        .node-card { border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; background: #0a0a0a; transition: 0.3s; }
+        .btn { border: none; padding: 18px; width: 100%; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
         
-        /* NDA: THE GOLDEN 10X MOVE */
-        .gold-node { border: 2px solid #fbbf24; border-radius: 16px; padding: 20px; background: linear-gradient(145deg, #1a1a1a, #000); margin-bottom: 20px; box-shadow: 0 0 25px rgba(251, 191, 36, 0.2); }
-        .btn-nda { background: linear-gradient(to right, #fbbf24, #d97706); color: #000; border: none; padding: 22px; width: 100%; border-radius: 12px; font-weight: 900; font-size: 1.4rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 15px rgba(217, 119, 6, 0.3); }
-
-        /* LDF: THE STEADY 1.5X MOVE */
-        .red-node { border: 1px solid #991b1b; border-radius: 16px; padding: 15px; background: #0a0505; margin-bottom: 20px; }
-        .btn-ldf { background: #991b1b; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; opacity: 0.9; }
-
-        /* UDF: THE NEGLIGIBLE 0.5X MOVE */
-        .grey-node { border: 1px solid #333; border-radius: 16px; padding: 10px; background: #050505; opacity: 0.5; }
-        .btn-udf { background: #262626; color: #666; border: none; padding: 10px; width: 100%; border-radius: 10px; cursor: not-allowed; font-size: 0.8rem; }
-
-        .multiplier { display: block; font-size: 0.75rem; margin-top: 8px; font-weight: bold; letter-spacing: 1px; }
-        .glimmer { animation: shine 2s infinite; }
-        @keyframes shine { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+        /* Color Logic */
+        .nda-gold { background: linear-gradient(to right, #fbbf24, #d97706); color: #000; }
+        .ldf-red { background: #991b1b; color: #fff; }
+        .udf-blue { background: #1d4ed8; color: #fff; }
+        
+        .high-yield { border: 2px solid #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
+        .label { font-size: 0.7rem; color: #888; letter-spacing: 1px; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div style="font-size: 0.7rem; color: #fbbf24; letter-spacing: 3px;">VOX VEDA 2026</div>
-        <div style="font-size: 1.2rem; font-weight: 800; margin-top: 5px;">SOVEREIGN YIELD ENGINE</div>
+    <div style="font-size: 0.6rem; color: #fbbf24; letter-spacing: 4px; margin-bottom: 10px;">KERALA 2026 SUPREMACY</div>
+
+    <div class="node-card" style="border: 2px solid #fbbf24;">
+        <span class="label">🏆 STATE-WIDE GRAND FINALE</span>
+        <h3 style="margin: 5px 0;">WHO WILL RULE KERALA?</h3>
+        <button class="btn nda-gold" onclick="execute('STATE', 'NDA', 10)">NDA WIN (10X)</button>
+        <button class="btn ldf-red" style="margin-top:10px" onclick="execute('STATE', 'LDF', 1.5)">LDF WIN (1.5X)</button>
+        <button class="btn udf-blue" style="margin-top:10px" onclick="execute('STATE', 'UDF', 0.5)">UDF WIN (0.5X)</button>
     </div>
 
-    <div class="gold-node glimmer">
-        <div style="color: #fbbf24; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;">🏆 HIGH-VELOCITY ALPHA NODE</div>
-        <div style="font-size: 1.1rem; color: #fff;">NDA / BJP SWEEP</div>
-        <button class="btn-nda" onclick="forecast('NDA', 10)">10X PAYOUT</button>
-        <span class="multiplier" style="color: #fbbf24;">ESTIMATED RETURN: 1000%</span>
-    </div>
+    <hr style="border: 0.5px solid #222; margin: 20px 0;">
 
-    <div class="red-node">
-        <div style="font-size: 0.9rem; margin-bottom: 8px;">LDF RETENTION</div>
-        <button class="btn-ldf" onclick="forecast('LDF', 1.5)">1.5X PAYOUT</button>
-        <span class="multiplier" style="color: #991b1b;">ESTIMATED RETURN: 150%</span>
-    </div>
+    <span class="label">📍 LOCAL NODE SELECTION</span>
+    <select id="constituency" onchange="updateOdds()">
+        <option value="default">-- Select Constituency --</option>
+        <option value="Nemom">Nemom (Trivandrum)</option>
+        <option value="Ernakulam">Ernakulam (Kochi)</option>
+        <option value="Dharmadam">Dharmadam (Kannur)</option>
+        <option value="Puthuppally">Puthuppally (Kottayam)</option>
+        <option value="Manjeshwar">Manjeshwar (Kasaragod)</option>
+    </select>
 
-    <div class="grey-node">
-        <div style="font-size: 0.8rem; margin-bottom: 5px;">UDF COALITION</div>
-        <button class="btn-udf" disabled>0.5X PAYOUT</button>
-        <span class="multiplier">MINIMAL LIQUIDITY</span>
+    <div id="localNode" class="node-card" style="display:none;">
+        <span class="label" id="nodeType">LOCAL CONSTITUENCY NODE</span>
+        <h3 id="currentC" style="margin: 5px 0;">-</h3>
+        <div id="oddsContainer"></div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.setHeaderColor('#050505');
-
-        // 🔥 ESSENTIAL: YOUR TON WALLET ADDRESS
         const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
 
-        function forecast(side, multi) {
-            tg.showConfirm(`INITIATING ${multi}X YIELD COMMAND: ${side}\n\nDEPOSIT USDT (TON) TO MASTER NODE:\n${masterWallet}`, (ok) => {
-                if(ok) {
-                    tg.showAlert("PROTOCOL INITIATED. BLOCKCHAIN VALIDATION IN PROGRESS.");
-                }
+        const cData = {
+            "Nemom": { nda: 2, ldf: 5, udf: 8, focus: "LDF/UDF" },
+            "Ernakulam": { nda: 15, ldf: 10, udf: 1.1, focus: "NDA/LDF" },
+            "Dharmadam": { nda: 20, ldf: 1.1, udf: 15, focus: "NDA/UDF" },
+            "Puthuppally": { nda: 12, ldf: 15, udf: 1.1, focus: "NDA/LDF" },
+            "Manjeshwar": { nda: 1.5, ldf: 10, udf: 3, focus: "LDF" }
+        };
+
+        function updateOdds() {
+            const val = document.getElementById('constituency').value;
+            const container = document.getElementById('oddsContainer');
+            const box = document.getElementById('localNode');
+            
+            if(val === "default") { box.style.display = "none"; return; }
+            
+            box.style.display = "block";
+            document.getElementById('currentC').innerText = val;
+            const d = cData[val];
+            
+            container.innerHTML = `
+                <button class="btn nda-gold" onclick="execute('${val}', 'NDA', ${d.nda})">NDA (${d.nda}X)</button>
+                <button class="btn ldf-red" style="margin-top:10px" onclick="execute('${val}', 'LDF', ${d.ldf})">LDF (${d.ldf}X)</button>
+                <button class="btn udf-blue" style="margin-top:10px" onclick="execute('${val}', 'UDF', ${d.udf})">UDF (${d.udf}X)</button>
+                <p style="font-size: 0.7rem; color: #fbbf24; margin-top:10px;">🎯 ARCHITECT TARGET: FORECAST ${d.focus}</p>
+            `;
+        }
+
+        function execute(loc, side, multi) {
+            tg.showConfirm(`LOC: ${loc}\nSIDE: ${side}\nYIELD: ${multi}X\n\nDEPOSIT TO MASTER NODE:\n${masterWallet}`, (ok) => {
+                if(ok) tg.showAlert("TRANSACTION LOGGED.");
             });
         }
     </script>
