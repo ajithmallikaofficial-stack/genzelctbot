@@ -1,44 +1,70 @@
-<script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOX VEDA | Sovereign Exchange</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --gold: #d4af37; --bg: #0f172a; --orange: #f97316; --red: #ef4444; }
+        body { background: var(--bg); color: #f8fafc; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .card { background: #1e293b; border-radius: 16px; padding: 20px; border: 1px solid #334155; margin-bottom: 20px; }
+        .btn { border: none; padding: 18px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 12px; color: white; text-transform: uppercase; }
+        .btn-nda { background: linear-gradient(to right, #f97316, #ea580c); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); }
+        .btn-ldf { background: var(--red); }
+        .btn-udf { background: #475569; opacity: 0.6; font-size: 0.8rem; }
+        .multiplier { float: right; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h2 style="color: var(--gold); letter-spacing: 2px;">VOX VEDA 🏛️</h2>
+    <p style="font-size: 0.8rem; color: #94a3b8;">SOVEREIGN INTELLIGENCE NETWORK</p>
 
-    // 1. YOUR SUPABASE CREDENTIALS
-    const SUPABASE_URL = "https://oqj3jas-qujFk-xLGPq0-A-7ZQKw.supabase.co"; 
-    const SUPABASE_KEY = "sb_publishable_oqj3jas-qujFk-xLGPq0-A-7ZQKw..."; // Use your full Anon key
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <div class="card">
+        <h3>Kerala 2026 Shift</h3>
+        <button class="btn btn-nda" onclick="executeForecast('NDA', 10.0)">NDA / BJP SWEEP <span class="multiplier">10x</span></button>
+        <button class="btn btn-ldf" onclick="executeForecast('LDF', 1.5)">LDF RETENTION <span class="multiplier">1.5x</span></button>
+        <button class="btn btn-udf" onclick="executeForecast('UDF', 1.1)">UDF MAJORITY <span class="multiplier">1.1x</span></button>
+    </div>
 
-    // 2. MASTER WALLET
-    const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready(); // Critical for clearing the loading screen
 
-    // 3. CAPTURE REFERRER (MLM Tracking)
-    const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get('tgWebAppStartParam') || "Direct";
+        // PASTE YOUR ACTUAL DETAILS HERE
+        const S_URL = "https://oqj3jas-qujFk-xLGPq0-A-7ZQKw.supabase.co";
+        const S_KEY = "YOUR_ACTUAL_ANON_KEY_HERE"; 
+        const WALLET = "YOUR_TON_WALLET_ADDRESS_HERE";
 
-    async function forecast(party, multiplier) {
-        tg.HapticFeedback.notificationOccurred('success');
+        const supabase = window.supabase.createClient(S_URL, S_KEY);
 
-        tg.showConfirm(`Confirm ${party} Forecast (${multiplier}x)?`, async (ok) => {
-            if (ok) {
-                // This saves the data to the table you just created
-                const { error } = await supabase
-                    .from('forecasts')
-                    .insert([
-                        { 
-                            user_id: tg.initDataUnsafe.user?.id.toString(), 
-                            username: tg.initDataUnsafe.user?.username || "Anonymous",
-                            selection: party, 
-                            multiplier: multiplier,
-                            referrer: referrerId 
-                        }
-                    ]);
+        async function executeForecast(party, mult) {
+            tg.HapticFeedback.impactOccurred('heavy');
+            
+            const user = tg.initDataUnsafe.user || { id: "Unknown", username: "Guest" };
+            const params = new URLSearchParams(window.location.search);
+            const ref = params.get('tgWebAppStartParam') || "Direct";
 
-                if (error) {
-                    console.error(error);
-                    tg.showAlert("Database connection error. Check your API keys.");
-                } else {
-                    tg.showAlert(`✅ Registered! Send USDT to activate:\n\n${masterWallet}`);
+            tg.showConfirm(`Confirm ${party} Forecast (${mult}x)?`, async (ok) => {
+                if (ok) {
+                    const { error } = await supabase.from('forecasts').insert([{ 
+                        user_id: String(user.id), 
+                        username: user.username,
+                        selection: party, 
+                        multiplier: mult,
+                        referrer: ref 
+                    }]);
+
+                    if (error) {
+                        tg.showAlert("Network Busy. Try again.");
+                    } else {
+                        tg.showAlert(`✅ SIGNAL LOCKED!\n\nTransfer USDT to:\n${WALLET}`);
+                    }
                 }
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
+</body>
+</html>
