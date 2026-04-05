@@ -1,21 +1,104 @@
-const cData = {
-    "Nemom": { nda: "Rajeev Chandrasekhar", n_multi: 10, ldf: 1.5, udf: 0.2 },
-    "Kazhakoottam": { nda: "V. Muraleedharan", n_multi: 12, ldf: 1.4, udf: 0.1 },
-    "Vattiyoorkavu": { nda: "R. Sreelekha (Ex-DGP)", n_multi: 15, ldf: 1.5, udf: 0.2 },
-    "Attingal": { nda: "P. Sudheer", n_multi: 10, ldf: 1.3, udf: 0.5 },
-    "Chathannur": { nda: "BB Gopakumar", n_multi: 10, ldf: 1.5, udf: 0.3 },
-    "Devikulam": { nda: "S. Rajendran", n_multi: 12, ldf: 1.2, udf: 0.4 },
-    "Thrissur": { nda: "Padmaja Venugopal", n_multi: 15, ldf: 1.5, udf: 0.1 },
-    "Guruvayoor": { nda: "B. Gopalakrishnan", n_multi: 10, ldf: 1.4, udf: 0.2 },
-    "Palakkad": { nda: "Sobha Surendran", n_multi: 10, ldf: 1.5, udf: 0.2 },
-    "Malampuzha": { nda: "C. Krishnakumar", n_multi: 12, ldf: 1.1, udf: 0.5 },
-    "Pala": { nda: "Shone George", n_multi: 15, ldf: 1.4, udf: 0.2 },
-    "Kunnathunad": { nda: "Babu Divakaran", n_multi: 10, ldf: 1.5, udf: 0.3 },
-    "Manalur": { nda: "KK Anish Kumar", n_multi: 10, ldf: 1.5, udf: 0.4 },
-    "Manjeshwaram": { nda: "K. Surendran", n_multi: 10, ldf: 1.3, udf: 0.6 },
-    "Nattika": { nda: "CC Mukundan", n_multi: 10, ldf: 1.5, udf: 0.2 },
-    "Poonjar": { nda: "P.C. George", n_multi: 20, ldf: 1.2, udf: 0.1 }, // Highest Alpha Move
-    "Thiruvalla": { nda: "Anoop Antony", n_multi: 12, ldf: 1.5, udf: 0.3 },
-    "Aranmula": { nda: "Kummanam Rajasekharan", n_multi: 10, ldf: 1.4, udf: 0.2 },
-    "Thripunithura": { nda: "Anjaly Nair", n_multi: 15, ldf: 1.5, udf: 0.1 }
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VOX VEDA | KERALA 2026</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root { --gold: #fbbf24; --gold-dark: #d97706; --red: #ef4444; --blue: #1e3a8a; --bg: #050505; --card-bg: #0f172a; }
+        
+        body { background: var(--bg); color: #e2e8f0; font-family: 'Inter', -apple-system, sans-serif; margin: 0; padding: 15px; line-height: 1.5; }
+        
+        /* TICKER */
+        .ticker { background: #111; color: var(--gold); font-size: 0.7rem; padding: 8px; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #222; font-weight: bold; position: sticky; top: 0; z-index: 100; }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* HEADINGS */
+        .section-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; color: #64748b; margin: 20px 0 10px 5px; display: block; }
+        
+        /* CARDS */
+        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #1e293b; transition: 0.3s; }
+        .card-gold { border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
+
+        /* BUTTONS */
+        .btn { border: none; padding: 18px; width: 100%; border-radius: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; font-size: 1rem; transition: transform 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-gold { background: linear-gradient(45deg, var(--gold), var(--gold-dark)); color: #000; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3); }
+        .btn-red { background: var(--red); color: white; }
+        .btn-blue { background: #1e293b; color: #475569; border: 1px solid #334155; }
+
+        /* SELECTOR */
+        select { background: #1e293b; color: var(--gold); border: 1px solid var(--gold); padding: 16px; width: 100%; border-radius: 14px; font-weight: bold; appearance: none; cursor: pointer; }
+
+        .yield-badge { background: rgba(251, 191, 36, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(251, 191, 36, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="ticker">
+        <div class="ticker-move">
+            🔥 GLOBAL POOL: 14,250,900 CREDITS • 🏛️ NDA 10X YIELD ACTIVE IN 19 HIGH-PROFILE NODES • 💰 ARCHITECT COMMISSIONS DISTRIBUTED EVERY 60 MINUTES • 
+        </div>
+    </div>
+
+    <span class="section-label">🏛️ State-Wide Supremacy</span>
+    <div class="card card-gold">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0;">Who Wins Kerala?</h2>
+            <span class="yield-badge">GRAND FINALE</span>
+        </div>
+        <button class="btn btn-gold" onclick="forecast('KERALA-STATE', 'NDA', 10)">NDA SUPREMACY (10X)</button>
+        <button class="btn btn-red" onclick="forecast('KERALA-STATE', 'LDF', 1.5)">LDF RETENTION (1.5X)</button>
+        <button class="btn btn-blue" onclick="forecast('KERALA-STATE', 'UDF', 0.5)">UDF COALITION (0.5X)</button>
+    </div>
+
+    <span class="section-label">📍 Regional Command Nodes</span>
+    <div class="card">
+        <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px;">Select a constituency to participate in local-level disruption.</p>
+        <select id="constSelect" onchange="renderLocal()">
+            <option value="">-- Choose Constituency --</option>
+            <option value="Nemom">Nemom - Rajeev Chandrasekhar</option>
+            <option value="Kazhakoottam">Kazhakoottam - V. Muraleedharan</option>
+            <option value="Vattiyoorkavu">Vattiyoorkavu - Sreelekha (Ex-DGP)</option>
+            <option value="Attingal">Attingal - P. Sudheer</option>
+            <option value="Chathannur">Chathannur - BB Gopakumar</option>
+            <option value="Devikulam">Devikulam - S. Rajendran</option>
+            <option value="Thrissur">Thrissur - Padmaja Venugopal</option>
+            <option value="Guruvayoor">Guruvayoor - B. Gopalakrishnan</option>
+            <option value="Palakkad">Palakkad - Sobha Surendran</option>
+            <option value="Malampuzha">Malampuzha - C. Krishnakumar</option>
+            <option value="Pala">Pala - Shone George</option>
+            <option value="Kunnathunad">Kunnathunad - Babu Divakaran</option>
+            <option value="Manalur">Manalur - KK Anish Kumar</option>
+            <option value="Manjeshwaram">Manjeshwaram - K. Surendran</option>
+            <option value="Nattika">Nattika - CC Mukundan</option>
+            <option value="Poonjar">Poonjar - P.C. George</option>
+            <option value="Thiruvalla">Thiruvalla - Anoop Antony</option>
+            <option value="Aranmula">Aranmula - Kummanam Rajasekharan</option>
+            <option value="Thripunithura">Thripunithura - Anjaly Nair</option>
+        </select>
+
+        <div id="localDisplay" style="display:none; margin-top: 25px;">
+            <div id="localData"></div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#050505');
+
+        // 🔥 YOUR WALLET ADDRESS
+        const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
+
+        const cData = {
+            "Nemom": { nda: "Rajeev Chandrasekhar", n_multi: 10, ldf: 1.5, udf: 0.2 },
+            "Kazhakoottam": { nda: "V. Muraleedharan", n_multi: 12, ldf: 1.4, udf: 0.1 },
+            "Vattiyoorkavu": { nda: "R. Sreelekha", n_multi: 15, ldf: 1.5, udf: 0.2 },
+            "Attingal": { nda: "P. Sudheer", n_multi: 10, ldf: 1.3, udf: 0.5 },
+            "Chathannur": { nda: "BB Gopakumar", n_multi: 10, ldf: 1.5, udf: 0.3 },
+            "Devikulam": { nda: "S. Rajendran", n_multi: 12, ldf: 1.2, udf: 0.4 },
+            "Thrissur": { nda: "Padmaja Venugopal", n_multi: 15, ldf: 1.5, udf: 0.1 },
+            "Guruvayoor": { nda: "B. Gopalakrishnan", n_multi: 10, ldf:
