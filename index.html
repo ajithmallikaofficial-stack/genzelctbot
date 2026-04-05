@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VOX VEDA | COMMAND CENTER</title>
+    <title>VOX VEDA | SUPREMACY NODE</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #000; color: #00ff41; font-family: 'Courier New', monospace; padding: 20px; text-transform: uppercase; }
-        .header { border-bottom: 2px solid #00ff41; padding-bottom: 10px; margin-bottom: 20px; }
-        .node-box { border: 1px solid #333; border-radius: 4px; padding: 15px; margin-bottom: 20px; background: #0a0a0a; }
+        body { background: #050505; color: #e2e8f0; font-family: 'Inter', sans-serif; padding: 20px; text-align: center; }
+        .header { border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px; }
         
-        /* THE HIGH-RETURN NDA BUTTON */
-        .btn-nda { background: #f97316; color: black; border: none; padding: 20px; width: 100%; font-weight: 900; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 15px #f97316; margin-top: 10px; }
-        
-        /* THE STEADY LDF BUTTON */
-        .btn-ldf { background: #991b1b; color: white; border: none; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        
-        /* THE NEGLIGIBLE UDF BUTTON */
-        .btn-udf { background: #111; color: #333; border: 1px solid #222; padding: 10px; width: 100%; cursor: not-allowed; margin-top: 10px; font-size: 0.7rem; }
-        
-        .label { font-size: 0.7rem; letter-spacing: 2px; color: #888; }
-        .glitch { animation: flash 2s infinite; }
-        @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        /* NDA: THE GOLDEN 10X MOVE */
+        .gold-node { border: 2px solid #fbbf24; border-radius: 16px; padding: 20px; background: linear-gradient(145deg, #1a1a1a, #000); margin-bottom: 20px; box-shadow: 0 0 25px rgba(251, 191, 36, 0.2); }
+        .btn-nda { background: linear-gradient(to right, #fbbf24, #d97706); color: #000; border: none; padding: 22px; width: 100%; border-radius: 12px; font-weight: 900; font-size: 1.4rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 15px rgba(217, 119, 6, 0.3); }
+
+        /* LDF: THE STEADY 1.5X MOVE */
+        .red-node { border: 1px solid #991b1b; border-radius: 16px; padding: 15px; background: #0a0505; margin-bottom: 20px; }
+        .btn-ldf { background: #991b1b; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; opacity: 0.9; }
+
+        /* UDF: THE NEGLIGIBLE 0.5X MOVE */
+        .grey-node { border: 1px solid #333; border-radius: 16px; padding: 10px; background: #050505; opacity: 0.5; }
+        .btn-udf { background: #262626; color: #666; border: none; padding: 10px; width: 100%; border-radius: 10px; cursor: not-allowed; font-size: 0.8rem; }
+
+        .multiplier { display: block; font-size: 0.75rem; margin-top: 8px; font-weight: bold; letter-spacing: 1px; }
+        .glimmer { animation: shine 2s infinite; }
+        @keyframes shine { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="label">System: VOX VEDA 2026</div>
-        <div style="font-size: 1.5rem; font-weight: bold;">Intelligence Node Active</div>
+        <div style="font-size: 0.7rem; color: #fbbf24; letter-spacing: 3px;">VOX VEDA 2026</div>
+        <div style="font-size: 1.2rem; font-weight: 800; margin-top: 5px;">SOVEREIGN YIELD ENGINE</div>
     </div>
 
-    <div class="node-box" style="border-color: #f97316;">
-        <div class="label" style="color: #f97316;">🔥 PRIORITY YIELD: ALPHA NODE</div>
-        <div style="font-size: 1.1rem; margin-top: 5px;">NDA / BJP MAJORITY</div>
-        <button class="btn-nda" onclick="forecast('NDA')">EXECUTE (7.5X RETURN)</button>
-        <div class="label" style="margin-top: 8px;">MARKET SENTIMENT: SHIFTING POSITIVE</div>
+    <div class="gold-node glimmer">
+        <div style="color: #fbbf24; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;">🏆 HIGH-VELOCITY ALPHA NODE</div>
+        <div style="font-size: 1.1rem; color: #fff;">NDA / BJP SWEEP</div>
+        <button class="btn-nda" onclick="forecast('NDA', 10)">10X PAYOUT</button>
+        <span class="multiplier" style="color: #fbbf24;">ESTIMATED RETURN: 1000%</span>
     </div>
 
-    <div class="node-box" style="border-color: #991b1b;">
-        <div class="label">BETA NODE</div>
-        <div style="font-size: 1rem; margin-top: 5px;">LDF RETENTION</div>
-        <button class="btn-ldf" onclick="forecast('LDF')">EXECUTE (2.5X RETURN)</button>
+    <div class="red-node">
+        <div style="font-size: 0.9rem; margin-bottom: 8px;">LDF RETENTION</div>
+        <button class="btn-ldf" onclick="forecast('LDF', 1.5)">1.5X PAYOUT</button>
+        <span class="multiplier" style="color: #991b1b;">ESTIMATED RETURN: 150%</span>
     </div>
 
-    <div class="node-box" style="opacity: 0.4;">
-        <div class="label">OUTLIER NODE</div>
-        <div style="font-size: 0.8rem; margin-top: 5px;">UDF COALITION</div>
-        <button class="btn-udf" disabled>LOW LIQUIDITY (1.2X)</button>
+    <div class="grey-node">
+        <div style="font-size: 0.8rem; margin-bottom: 5px;">UDF COALITION</div>
+        <button class="btn-udf" disabled>0.5X PAYOUT</button>
+        <span class="multiplier">MINIMAL LIQUIDITY</span>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.setHeaderColor('#000000');
+        tg.setHeaderColor('#050505');
 
-        // IMPORTANT: REPLACE WITH YOUR TON ADDRESS
+        // 🔥 ESSENTIAL: YOUR TON WALLET ADDRESS
         const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
 
-        function forecast(side) {
-            tg.showConfirm(`INITIATING COMMAND: ${side}\n\nTRANSFER CREDITS TO MASTER NODE:\n${masterWallet}`, (ok) => {
+        function forecast(side, multi) {
+            tg.showConfirm(`INITIATING ${multi}X YIELD COMMAND: ${side}\n\nDEPOSIT USDT (TON) TO MASTER NODE:\n${masterWallet}`, (ok) => {
                 if(ok) {
-                    tg.showAlert("TRANSACTION PENDING. VALIDATING ON BLOCKCHAIN...");
+                    tg.showAlert("PROTOCOL INITIATED. BLOCKCHAIN VALIDATION IN PROGRESS.");
                 }
             });
         }
