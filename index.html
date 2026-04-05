@@ -3,79 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOX VEDA | COMMAND</title>
+    <title>VOX VEDA | INSTITUTIONAL</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --gold: #fbbf24; --gold-glow: rgba(251, 191, 36, 0.4); --red: #ef4444; --blue: #3b82f6; --dark: #050505; --card: #0f172a; }
-        body { background: var(--dark); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        :root { --gold: #fbbf24; --gold-2: #d97706; --red: #ef4444; --blue: #3b82f6; --bg: #020617; --card: #0f172a; --text: #f8fafc; }
         
-        /* TAB NAVIGATION */
-        .tabs { display: flex; background: #111; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; color: #64748b; font-weight: bold; text-transform: uppercase; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); background: rgba(251, 191, 36, 0.05); }
-
-        /* CONTENT */
-        .tab-content { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* CARDS & UI */
-        .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #1e293b; }
-        .card-gold { border: 2px solid var(--gold); box-shadow: 0 0 20px var(--gold-glow); }
-        .btn { border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.1s; }
-        .btn-gold { background: linear-gradient(45deg, #fbbf24, #d97706); color: #000; }
-        .btn-red { background: var(--red); color: white; }
-        .btn-blue { background: #1e3a8a; color: #94a3b8; font-size: 0.8rem; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
-        select { background: #1e293b; color: var(--gold); border: 1px solid var(--gold); padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-bottom: 20px; }
-        .label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        /* PROFESSIONAL HEADER */
+        .header { background: #000; padding: 15px 20px; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .status-dot { height: 8px; width: 8px; background: #22c55e; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #22c55e; }
+        .live-label { font-size: 0.65rem; font-weight: 900; letter-spacing: 1px; color: #94a3b8; }
+
+        /* TAB SYSTEM */
+        .nav-tabs { display: flex; background: #000; padding: 5px; border-bottom: 1px solid #1e293b; }
+        .tab { flex: 1; padding: 12px; border: none; background: none; color: #64748b; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.2s; border-radius: 8px; }
+        .tab.active { color: var(--gold); background: #1e293b; }
+
+        /* CARDS */
+        .content { padding: 15px; }
+        .market-card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid #1e293b; position: relative; }
+        .market-card.premium { border: 1px solid var(--gold); background: linear-gradient(145deg, #0f172a, #020617); }
+
+        /* SENTIMENT BAR */
+        .sentiment-container { margin: 15px 0; background: #1e293b; height: 6px; border-radius: 10px; overflow: hidden; display: flex; }
+        .bar-nda { background: var(--gold); height: 100%; transition: 1s; }
+        .bar-ldf { background: var(--red); height: 100%; transition: 1s; }
+        .bar-udf { background: #334155; height: 100%; transition: 1s; }
+
+        /* ORDER BUTTONS */
+        .action-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
+        .btn { padding: 16px; border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-nda { background: var(--gold); color: #000; }
+        .btn-ldf { background: #1e293b; color: var(--red); border: 1px solid var(--red); }
+        .btn-udf { background: #0f172a; color: #475569; border: 1px solid #1e293b; font-size: 0.8rem; }
+        
+        .odds { font-family: monospace; font-size: 1rem; }
+        .multiplier-tag { font-size: 0.6rem; font-weight: bold; background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; }
+
+        select { background: #1e293b; color: var(--gold); border: 1px solid #334155; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; margin-bottom: 15px; outline: none; }
     </style>
 </head>
 <body>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('global', this)">🌍 Global Supremacy</button>
-        <button class="tab-btn" onclick="switchTab('local', this)">📍 Local Nodes</button>
-    </div>
-
-    <div id="global" class="tab-content active">
-        <span class="label">State-Wide Final Prediction</span>
-        <div class="card card-gold">
-            <h2 style="margin:0 0 15px 0;">Who Wins Kerala 2026?</h2>
-            <button class="btn btn-gold" onclick="pay('KERALA-STATE', 'NDA', 10)">NDA SUPREMACY (10X)</button>
-            <button class="btn btn-red" onclick="pay('KERALA-STATE', 'LDF', 1.5)">LDF RETENTION (1.5X)</button>
-            <button class="btn btn-blue" onclick="pay('KERALA-STATE', 'UDF', 0.5)">UDF COALITION (0.5X)</button>
+    <div class="header">
+        <div>
+            <span style="color:var(--gold); font-weight:900; font-size:1.2rem; letter-spacing:-1px;">VOX VEDA</span>
+            <div class="live-label"><span class="status-dot"></span> INSTITUTIONAL FEED</div>
         </div>
-        <p style="text-align:center; font-size:0.7rem; color:#444;">Settlement Date: May 2026</p>
+        <div style="text-align:right">
+            <div style="font-size:0.6rem; color:#64748b;">COMMISSION RATE</div>
+            <div style="color:#22c55e; font-weight:bold; font-size:0.8rem;">2.0% FIX</div>
+        </div>
     </div>
 
-    <div id="local" class="tab-content">
-        <span class="label">Constituency Intelligence</span>
-        <select id="cSelect" onchange="renderC()">
-            <option value="">-- Choose Constituency --</option>
-            <option value="Nemom">Nemom - Rajeev Chandrasekhar</option>
-            <option value="Kazhakoottam">Kazhakoottam - V. Muraleedharan</option>
-            <option value="Vattiyoorkavu">Vattiyoorkavu - R. Sreelekha</option>
-            <option value="Attingal">Attingal - P. Sudheer</option>
-            <option value="Chathannur">Chathannur - BB Gopakumar</option>
-            <option value="Devikulam">Devikulam - S. Rajendran</option>
-            <option value="Thrissur">Thrissur - Padmaja Venugopal</option>
-            <option value="Guruvayoor">Guruvayoor - B. Gopalakrishnan</option>
-            <option value="Palakkad">Palakkad - Sobha Surendran</option>
-            <option value="Malampuzha">Malampuzha - C. Krishnakumar</option>
-            <option value="Pala">Pala - Shone George</option>
-            <option value="Kunnathunad">Kunnathunad - Babu Divakaran</option>
-            <option value="Manalur">Manalur - KK Anish Kumar</option>
-            <option value="Manjeshwaram">Manjeshwaram - K. Surendran</option>
-            <option value="Nattika">Nattika - CC Mukundan</option>
-            <option value="Poonjar">Poonjar - P.C. George</option>
-            <option value="Thiruvalla">Thiruvalla - Anoop Antony</option>
-            <option value="Aranmula">Aranmula - Kummanam Rajasekharan</option>
-            <option value="Thripunithura">Thripunithura - Anjaly Nair</option>
-        </select>
+    <div class="nav-tabs">
+        <button class="tab active" onclick="showTab('global', this)">Global</button>
+        <button class="tab" onclick="showTab('local', this)">Constituency</button>
+    </div>
 
-        <div id="localNode" class="card" style="display:none;">
-            <div id="nodeData"></div>
+    <div class="content">
+        <div id="global" class="tab-pane active">
+            <div class="market-card premium">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <h3 style="margin:0; font-size:1.1rem;">Kerala State Assembly 2026</h3>
+                    <span class="multiplier-tag" style="color:var(--gold)">MASTER POOL</span>
+                </div>
+                
+                <div class="sentiment-container">
+                    <div class="bar-nda" style="width: 65%"></div>
+                    <div class="bar-ldf" style="width: 25%"></div>
+                    <div class="bar-udf" style="width: 10%"></div>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:#94a3b8; margin-bottom:20px;">
+                    <span>NDA: 65%</span>
+                    <span>LDF: 25%</span>
+                    <span>UDF: 10%</span>
+                </div>
+
+                <div class="action-grid">
+                    <button class="btn btn-nda" onclick="execute('STATE', 'NDA', 10)">
+                        <span>BUY NDA SUCCESS</span>
+                        <span class="odds">10.0x</span>
+                    </button>
+                    <button class="btn btn-ldf" onclick="execute('STATE', 'LDF', 1.5)">
+                        <span>BUY LDF SUCCESS</span>
+                        <span class="odds">1.5x</span>
+                    </button>
+                    <button class="btn btn-udf" onclick="execute('STATE', 'UDF', 0.1)">
+                        <span>BUY UDF SUCCESS</span>
+                        <span class="odds">0.1x</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="local" class="tab-pane" style="display:none;">
+            <select id="cSelect" onchange="loadNode()">
+                <option value="">SELECT NODE (19 PRIORITY)...</option>
+                <option value="Nemom">Nemom - Rajeev Chandrasekhar</option>
+                <option value="Kazhakoottam">Kazhakoottam - V. Muraleedharan</option>
+                <option value="Vattiyoorkavu">Vattiyoorkavu - R. Sreelekha</option>
+                <option value="Poonjar">Poonjar - P.C. George</option>
+                <option value="Palakkad">Palakkad - Sobha Surendran</option>
+                <option value="Thrissur">Thrissur - Padmaja Venugopal</option>
+                </select>
+
+            <div id="nodeContent">
+                <div style="text-align:center; padding:40px; color:#475569; font-size:0.8rem;">
+                    Select a localized node to view sentiment and liquidity.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -84,55 +124,51 @@
         tg.expand();
         const wallet = "YOUR_TON_WALLET_ADDRESS_HERE";
 
-        const cData = {
-            "Nemom": { nda: "Rajeev Chandrasekhar", n_multi: 10, ldf: 1.5, udf: 0.2 },
-            "Kazhakoottam": { nda: "V. Muraleedharan", n_multi: 12, ldf: 1.4, udf: 0.1 },
-            "Vattiyoorkavu": { nda: "R. Sreelekha (Ex-DGP)", n_multi: 15, ldf: 1.5, udf: 0.2 },
-            "Attingal": { nda: "P. Sudheer", n_multi: 10, ldf: 1.3, udf: 0.5 },
-            "Chathannur": { nda: "BB Gopakumar", n_multi: 10, ldf: 1.5, udf: 0.3 },
-            "Devikulam": { nda: "S. Rajendran", n_multi: 12, ldf: 1.2, udf: 0.4 },
-            "Thrissur": { nda: "Padmaja Venugopal", n_multi: 15, ldf: 1.5, udf: 0.1 },
-            "Guruvayoor": { nda: "B. Gopalakrishnan", n_multi: 10, ldf: 1.4, udf: 0.2 },
-            "Palakkad": { nda: "Sobha Surendran", n_multi: 10, ldf: 1.5, udf: 0.2 },
-            "Malampuzha": { nda: "C. Krishnakumar", n_multi: 12, ldf: 1.1, udf: 0.5 },
-            "Pala": { nda: "Shone George", n_multi: 15, ldf: 1.4, udf: 0.2 },
-            "Kunnathunad": { nda: "Babu Divakaran", n_multi: 10, ldf: 1.5, udf: 0.3 },
-            "Manalur": { nda: "KK Anish Kumar", n_multi: 10, ldf: 1.5, udf: 0.4 },
-            "Manjeshwaram": { nda: "K. Surendran", n_multi: 10, ldf: 1.3, udf: 0.6 },
-            "Nattika": { nda: "CC Mukundan", n_multi: 10, ldf: 1.5, udf: 0.2 },
-            "Poonjar": { nda: "P.C. George", n_multi: 20, ldf: 1.2, udf: 0.1 },
-            "Thiruvalla": { nda: "Anoop Antony", n_multi: 12, ldf: 1.5, udf: 0.3 },
-            "Aranmula": { nda: "Kummanam Rajasekharan", n_multi: 10, ldf: 1.4, udf: 0.2 },
-            "Thripunithura": { nda: "Anjaly Nair", n_multi: 15, ldf: 1.5, udf: 0.1 }
+        const nodeData = {
+            "Nemom": { candidate: "Rajeev Chandrasekhar", n: 10, l: 1.5, u: 0.1, n_sent: 70 },
+            "Kazhakoottam": { candidate: "V. Muraleedharan", n: 12, l: 1.4, u: 0.1, n_sent: 55 },
+            "Vattiyoorkavu": { candidate: "R. Sreelekha", n: 15, l: 1.2, u: 0.2, n_sent: 40 },
+            "Poonjar": { candidate: "P.C. George", n: 20, l: 1.1, u: 0.1, n_sent: 85 },
+            "Palakkad": { candidate: "Sobha Surendran", n: 10, l: 1.5, u: 0.2, n_sent: 60 },
+            "Thrissur": { candidate: "Padmaja Venugopal", n: 15, l: 1.5, u: 0.1, n_sent: 50 }
         };
 
-        function switchTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        function showTab(id, btn) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
             btn.classList.add('active');
         }
 
-        function renderC() {
+        function loadNode() {
             const val = document.getElementById('cSelect').value;
-            const node = document.getElementById('localNode');
-            if(!val) { node.style.display = 'none'; return; }
-            node.style.display = 'block';
-            const d = cData[val];
-            document.getElementById('nodeData').innerHTML = `
-                <h3 style="color:var(--gold); margin-top:0;">${val} NODE</h3>
-                <p style="font-size:0.8rem; color:#888;">NDA CANDIDATE: ${d.nda}</p>
-                <button class="btn btn-gold" onclick="pay('${val}', 'NDA', ${d.n_multi})">EXECUTE NDA (${d.n_multi}X)</button>
-                <button class="btn btn-red" onclick="pay('${val}', 'LDF', ${d.ldf})">LDF (${d.ldf}X)</button>
-                <button class="btn btn-blue" onclick="pay('${val}', 'UDF', ${d.udf})">UDF (${d.udf}X)</button>
+            const container = document.getElementById('nodeContent');
+            if(!val) return;
+            const d = nodeData[val];
+            container.innerHTML = `
+                <div class="market-card">
+                    <span class="label">NODE: ${val}</span>
+                    <h3 style="margin:5px 0 15px 0; color:var(--gold);">${d.candidate}</h3>
+                    
+                    <div class="sentiment-container">
+                        <div class="bar-nda" style="width: ${d.n_sent}%"></div>
+                        <div class="bar-ldf" style="width: ${90 - d.n_sent}%"></div>
+                        <div class="bar-udf" style="width: 10%"></div>
+                    </div>
+
+                    <div class="action-grid">
+                        <button class="btn btn-nda" onclick="execute('${val}', 'NDA', ${d.n})">
+                            <span>NDA POSITION</span>
+                            <span class="odds">${d.n}.0x</span>
+                        </button>
+                        <button class="btn btn-ldf" onclick="execute('${val}', 'LDF', ${d.l})">
+                            <span>LDF POSITION</span>
+                            <span class="odds">${d.l}x</span>
+                        </button>
+                    </div>
+                </div>
             `;
         }
 
-        function pay(loc, side, multi) {
-            tg.showConfirm(`CONFIRM ${multi}X YIELD COMMAND?\n\nTarget: ${loc}\nPosition: ${side}\n\nTransfer to Master Node:\n${wallet}`, (ok) => {
-                if(ok) tg.showAlert("TRANSACTION LOGGED.");
-            });
-        }
-    </script>
-</body>
-</html>
+        function execute(loc, side, multi) {
+            tg.showConfirm(`INST
