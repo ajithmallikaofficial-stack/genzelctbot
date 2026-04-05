@@ -1,87 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VOX VEDA | GLOBAL COMMAND</title>
+    <title>VOX VEDA | SUPREMACY</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #050505; color: #e2e8f0; font-family: 'Inter', sans-serif; padding: 15px; text-align: center; }
-        select { background: #1a1a1a; color: #fbbf24; border: 1px solid #fbbf24; padding: 12px; width: 100%; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
-        .node-card { border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; background: #0a0a0a; transition: 0.3s; }
-        .btn { border: none; padding: 18px; width: 100%; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
+        :root { --gold: #fbbf24; --red: #ef4444; --blue: #3b82f6; --dark: #050505; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 15px; overflow-x: hidden; }
         
-        /* Color Logic */
-        .nda-gold { background: linear-gradient(to right, #fbbf24, #d97706); color: #000; }
-        .ldf-red { background: #991b1b; color: #fff; }
-        .udf-blue { background: #1d4ed8; color: #fff; }
+        /* SCROLLING TICKER */
+        .ticker { background: #111; color: var(--gold); font-size: 0.7rem; padding: 5px; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #222; }
+        .ticker-wrap { display: inline-block; animation: scroll 20s linear infinite; }
+        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        /* CARDS */
+        .card { background: #0f172a; border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #1e293b; position: relative; overflow: hidden; }
+        .card-nda { border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(251, 191, 36, 0.15); }
         
-        .high-yield { border: 2px solid #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
-        .label { font-size: 0.7rem; color: #888; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        /* DYNAMIC BUTTONS */
+        .btn { border: none; padding: 20px; width: 100%; border-radius: 14px; font-weight: 900; cursor: pointer; transition: 0.2s; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-gold { background: linear-gradient(45deg, #fbbf24, #d97706); color: black; font-size: 1.3rem; }
+        .btn-red { background: var(--red); color: white; }
+        .btn-blue { background: #1e293b; color: #475569; border: 1px solid #334155; }
+
+        .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: #64748b; margin-bottom: 5px; display: block; }
+        select { background: #1e293b; color: var(--gold); border: 1px solid #334155; padding: 15px; width: 100%; border-radius: 12px; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div style="font-size: 0.6rem; color: #fbbf24; letter-spacing: 4px; margin-bottom: 10px;">KERALA 2026 SUPREMACY</div>
 
-    <div class="node-card" style="border: 2px solid #fbbf24;">
-        <span class="label">🏆 STATE-WIDE GRAND FINALE</span>
-        <h3 style="margin: 5px 0;">WHO WILL RULE KERALA?</h3>
-        <button class="btn nda-gold" onclick="execute('STATE', 'NDA', 10)">NDA WIN (10X)</button>
-        <button class="btn ldf-red" style="margin-top:10px" onclick="execute('STATE', 'LDF', 1.5)">LDF WIN (1.5X)</button>
-        <button class="btn udf-blue" style="margin-top:10px" onclick="execute('STATE', 'UDF', 0.5)">UDF WIN (0.5X)</button>
+    <div class="ticker">
+        <div class="ticker-wrap">
+            🚀 ARCHITECT ID 8829 JUST EARNED 45,000 CREDITS (COMMISSION) • 🔥 NDA 10X NODE ACTIVATED IN 140 SEATS • ⚡ SETTLEMENT TIME: < 2 HOURS
+        </div>
     </div>
 
-    <hr style="border: 0.5px solid #222; margin: 20px 0;">
+    <div class="card card-nda">
+        <span class="label" style="color:var(--gold)">🏆 SUPREME STATE PREDICTION</span>
+        <h2 style="margin:10px 0;">WHO RULES KERALA?</h2>
+        <button class="btn btn-gold" onclick="pay('STATE', 'NDA', 10)">NDA SUPREMACY (10X)</button>
+        <button class="btn btn-red" style="margin-top:12px" onclick="pay('STATE', 'LDF', 1.5)">LDF RETENTION (1.5X)</button>
+        <button class="btn btn-blue" style="margin-top:12px" onclick="pay('STATE', 'UDF', 0.5)">UDF COALITION (0.5X)</button>
+        <p style="font-size:0.7rem; color:#64748b; margin-top:15px;">* UDF returns restricted due to Low Probability Index.</p>
+    </div>
 
-    <span class="label">📍 LOCAL NODE SELECTION</span>
-    <select id="constituency" onchange="updateOdds()">
-        <option value="default">-- Select Constituency --</option>
-        <option value="Nemom">Nemom (Trivandrum)</option>
-        <option value="Ernakulam">Ernakulam (Kochi)</option>
-        <option value="Dharmadam">Dharmadam (Kannur)</option>
-        <option value="Puthuppally">Puthuppally (Kottayam)</option>
-        <option value="Manjeshwar">Manjeshwar (Kasaragod)</option>
-    </select>
-
-    <div id="localNode" class="node-card" style="display:none;">
-        <span class="label" id="nodeType">LOCAL CONSTITUENCY NODE</span>
-        <h3 id="currentC" style="margin: 5px 0;">-</h3>
-        <div id="oddsContainer"></div>
+    <div class="card">
+        <span class="label">📍 TARGETED CONSTITUENCY NODES</span>
+        <select id="constSelect" onchange="loadC()">
+            <option value="">SELECT FROM 140 SEATS...</option>
+            <option value="Nemom">Nemom (Trivandrum)</option>
+            <option value="Ernakulam">Ernakulam (Kochi)</option>
+            <option value="Dharmadam">Dharmadam (Kannur)</option>
+            <option value="Vattiyoorkavu">Vattiyoorkavu</option>
+            <option value="Palakkad">Palakkad</option>
+            </select>
+        
+        <div id="cView" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:20px;">
+            <h3 id="cName" style="color:var(--gold)">-</h3>
+            <div id="cBtns"></div>
+        </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
+        const wallet = "YOUR_TON_WALLET_ADDRESS_HERE";
 
-        const cData = {
-            "Nemom": { nda: 2, ldf: 5, udf: 8, focus: "LDF/UDF" },
-            "Ernakulam": { nda: 15, ldf: 10, udf: 1.1, focus: "NDA/LDF" },
-            "Dharmadam": { nda: 20, ldf: 1.1, udf: 15, focus: "NDA/UDF" },
-            "Puthuppally": { nda: 12, ldf: 15, udf: 1.1, focus: "NDA/LDF" },
-            "Manjeshwar": { nda: 1.5, ldf: 10, udf: 3, focus: "LDF" }
-        };
-
-        function updateOdds() {
-            const val = document.getElementById('constituency').value;
-            const container = document.getElementById('oddsContainer');
-            const box = document.getElementById('localNode');
+        // PSYCHOLOGICAL RULE: NDA is ALWAYS 10x or Higher
+        function loadC() {
+            const name = document.getElementById('constSelect').value;
+            if(!name) return;
+            document.getElementById('cView').style.display = 'block';
+            document.getElementById('cName').innerText = name + " NODE";
             
-            if(val === "default") { box.style.display = "none"; return; }
-            
-            box.style.display = "block";
-            document.getElementById('currentC').innerText = val;
-            const d = cData[val];
-            
-            container.innerHTML = `
-                <button class="btn nda-gold" onclick="execute('${val}', 'NDA', ${d.nda})">NDA (${d.nda}X)</button>
-                <button class="btn ldf-red" style="margin-top:10px" onclick="execute('${val}', 'LDF', ${d.ldf})">LDF (${d.ldf}X)</button>
-                <button class="btn udf-blue" style="margin-top:10px" onclick="execute('${val}', 'UDF', ${d.udf})">UDF (${d.udf}X)</button>
-                <p style="font-size: 0.7rem; color: #fbbf24; margin-top:10px;">🎯 ARCHITECT TARGET: FORECAST ${d.focus}</p>
+            document.getElementById('cBtns').innerHTML = `
+                <div style="background:#1e1b4b; padding:10px; border-radius:10px; border:1px solid var(--gold);">
+                    <span class="label" style="color:var(--gold)">🔥 ALPHA OPPORTUNITY</span>
+                    <button class="btn btn-gold" onclick="pay('${name}', 'NDA', 10)">NDA (10X)</button>
+                </div>
+                <button class="btn btn-red" style="margin-top:10px;" onclick="pay('${name}', 'LDF', 1.5)">LDF (1.5X)</button>
+                <button class="btn btn-blue" style="margin-top:10px;" onclick="pay('${name}', 'UDF', 0.2)">UDF (0.2X)</button>
             `;
         }
 
-        function execute(loc, side, multi) {
-            tg.showConfirm(`LOC: ${loc}\nSIDE: ${side}\nYIELD: ${multi}X\n\nDEPOSIT TO MASTER NODE:\n${masterWallet}`, (ok) => {
-                if(ok) tg.showAlert("TRANSACTION LOGGED.");
+        function pay(loc, side, multi) {
+            tg.showConfirm(`CONFIRM ${multi}X EXECUTION\nCONSTITUENCY: ${loc}\n\nSEND USDT (TON) TO MASTER WALLET:\n${wallet}`, (ok) => {
+                if(ok) tg.showAlert("NODE SECURED. WAITING FOR BLOCKCHAIN CONFIRMATION.");
             });
         }
     </script>
