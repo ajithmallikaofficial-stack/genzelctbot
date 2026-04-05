@@ -1,42 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Vox Veda 2026 | Prediction Exchange</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .card { background: #1e293b; border-radius: 15px; padding: 20px; margin: 10px; border: 1px solid #334155; }
-        .btn { background: #3b82f6; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; }
-        .stats { color: #94a3b8; font-size: 0.8rem; }
-    </style>
-</head>
-<body>
-    <h2>🏛️ Election Prediction</h2>
-    <div class="card">
-        <h3>Kerala 2026: Majority</h3>
-        <p class="stats">Current Pool: 1,240,500 Credits</p>
-        <button class="btn" onclick="forecast('LDF')">Forecast LDF (1.8x)</button><br><br>
-        <button class="btn" onclick="forecast('UDF')">Forecast UDF (2.1x)</button>
+<div class="card">
+    <h3 style="color: #f97316;">Kerala 2026: The Power Shift</h3>
+    <p class="stats">Live Volume: 4,120,000 Credits</p>
+    
+    <div style="margin-bottom: 15px; border: 2px solid #f97316; border-radius: 12px; padding: 10px;">
+        <span style="font-size: 0.8rem; color: #f97316; font-weight: bold;">🔥 MAXIMUM RETURN</span>
+        <button class="btn" style="background: #f97316; margin-top: 5px;" onclick="forecast('NDA')">
+            NDA / BJP Sweep (7.5x)
+        </button>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    <div style="margin-bottom: 15px;">
+        <button class="btn" style="background: #ef4444;" onclick="forecast('LDF')">
+            LDF Retention (2.5x)
+        </button>
+    </div>
 
-        // MASTER WALLET CONFIGURATION
-        const masterWallet = "YOUR_TON_WALLET_ADDRESS_HERE";
-
-        // MLM TRACKER: Capture the Referrer ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const referrer = urlParams.get('tgWebAppStartParam'); 
-
-        function forecast(side) {
-            tg.showConfirm(`Confirm forecast for ${side}?\n\nTo complete, send USDT (TON Network) to:\n${masterWallet}\n\nReferrer Code: ${referrer || 'Direct'}`, (ok) => {
-                if(ok) {
-                    tg.showAlert("Request Logged. Once your transfer is detected on the blockchain, your credits will activate.");
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+    <div style="opacity: 0.6;">
+        <button class="btn" style="background: #334155; color: #94a3b8;" onclick="forecast('UDF')">
+            UDF Majority (1.2x)
+        </button>
+        <p style="font-size: 0.7rem; color: #94a3b8;">Market Sentiment: Low Probability</p>
+    </div>
+</div>
